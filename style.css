@@ -27,12 +27,12 @@ h1 {
     padding: 5px 10px;
     font-size: 12px;
     animation-name: fade;
-    animation-duration: 1s;
+    animation-duration: 2s;
   }
   
   body {
     animation-name: fade;
-    animation-duration: 1s;
+    animation-duration: 2s;
   }
   
   

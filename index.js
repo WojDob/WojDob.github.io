@@ -20,6 +20,9 @@ const loadSongs = async () => {
         const res = await fetch('https://itunes.apple.com/us/rss/topalbums/limit=100/json')
         songs_json = await res.json()
         itunesSongs = songs_json.feed.entry
+        itunesSongs.forEach(function(element, index){
+            element["index"] = index
+        } )
         displaySongs(itunesSongs)
     } catch (err) {
         console.error(err)
@@ -28,18 +31,17 @@ const loadSongs = async () => {
 
 
 const displaySongs = (songs) => {
-    const htmlString = songs
-        .map((element) => {
-            return `
-            <div class="song">
-                <img class="img-circle shadowed" src="${element["im:image"][2].label}" alt="Album image" width="180" height="180">
-                <h2>${element["im:name"].label}</h2>
-                <p>${element["im:artist"].label}</p>
-                <p><a class="btn btn-default shadowed" href="${element.link.attributes.href}" role="button" target="_blank">View details &raquo;</a></p>
-            </div>
-            `})
-    console.log(htmlString)
-    songsDiv.innerHTML = htmlString
+    songsDiv.innerHTML = ''
+    songs.forEach(function(element) {
+        songsDiv.innerHTML += `
+        <div class="song">
+            <img class="img-circle shadowed" src="${element["im:image"][2].label}" alt="Album image" width="180" height="180">
+            <h2>#${element["index"]} ${element["im:name"].label}</h2>
+            <p>${element["im:artist"].label}</p>
+            <p><a class="btn btn-default shadowed" href="${element.link.attributes.href}" role="button" target="_blank">View details &raquo;</a></p>
+        </div>
+        `; 
+      })
 }
 
 
