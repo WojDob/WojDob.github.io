@@ -2,7 +2,6 @@ const songs_element = document.getElementById('songs')
 const search_bar_element = document.getElementById('searchBar');
 const pagination_element = document.getElementById('pagination')
 let itunesSongs = [];
-
 let current_page = 1;
 let rows = 5;
 
