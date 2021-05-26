@@ -1,7 +1,11 @@
 const songs_element = document.getElementById('songs')
 const search_bar_element = document.getElementById('searchBar');
 const pagination_element = document.getElementById('pagination')
+const select_genre_element = document.getElementById('genres');
+
 let itunesSongs = [];
+let genres = [];
+let current_genre = "all"
 let current_page = 1;
 let rows = 5;
 
@@ -18,19 +22,46 @@ search_bar_element.addEventListener('keyup', (e) =>{
 })
 
 
+select_genre_element.addEventListener("change", (e) =>{
+    current_genre = e.target.value
+    if (current_genre !== "all") {
+        var filteredSongs = itunesSongs.filter((song) =>{
+            return (
+                song.category.attributes.label === current_genre
+            )
+        })
+        displaySongs(filteredSongs,songs_element,rows,current_page)
+    }
+    else{
+        displaySongs(itunesSongs,songs_element,rows,current_page)
+    }
+    
+});
+
+
 const loadSongs = async () => {
     try {
         const res = await fetch('https://itunes.apple.com/us/rss/topalbums/limit=100/json')
         songs_json = await res.json()
         itunesSongs = songs_json.feed.entry
         itunesSongs.forEach(function(element, index){
+            genre = element.category.attributes.label
+            if (genres.indexOf(genre) === -1) genres.push(genre);
             element["index"] = index
         } )
+        loadGenres(genres, select_genre_element)
         displaySongs(itunesSongs,songs_element,rows,current_page)
     } catch (err) {
         console.error(err)
     }
 }
+
+const loadGenres = (genres, wrapper) => {
+    genres.forEach(function(element){
+        wrapper.innerHTML += `<option value="${element}">${element}</option>`;
+    })
+}
+
 
 
 const displaySongs = (songs, wrapper, rows_per_page, page) => {
