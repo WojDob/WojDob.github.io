@@ -12,7 +12,7 @@ let rows = 10;
 
 
 search_bar_element.addEventListener('keyup', (e) =>{
-    current_search_string = e.target.value
+    current_search_string = e.target.value.toLowerCase()
     var filteredSongs = filterSongs(current_genre,current_search_string)
     displaySongs(filteredSongs,songs_element,rows,current_page)
 })
