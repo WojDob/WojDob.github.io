@@ -30,20 +30,19 @@
             placeholder="Search"
         />
       </div>
-      <hr>
 
-      <select name="Select genre" id="genres">
+      <label for="genres">Choose a genre:</label>
+      <select name="genres" id="genres">
         <option value="all">All</option>
-
       </select>
 
-      <div id="songs"></div>
+      <hr>
 
+      <div id="songs"></div>
       <div class="pagenumbers" id="pagination"></div>
 
     </div> <!-- /container -->
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
     <script defer src="index.js" charset="utf-8"></script>
   </body>
 </html>

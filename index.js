@@ -6,38 +6,44 @@ const select_genre_element = document.getElementById('genres');
 let itunesSongs = [];
 let genres = [];
 let current_genre = "all"
+let current_search_string = ""
 let current_page = 1;
-let rows = 5;
+let rows = 10;
 
 
 search_bar_element.addEventListener('keyup', (e) =>{
-    const searchString = e.target.value.toLowerCase()
-    const filteredSongs = itunesSongs.filter((song) =>{
-        return (
-            song["im:name"].label.toLowerCase().includes(searchString) ||
-            song["im:artist"].label.toLowerCase().includes(searchString)
-        )
-    })
+    current_search_string = e.target.value
+    var filteredSongs = filterSongs(current_genre,current_search_string)
     displaySongs(filteredSongs,songs_element,rows,current_page)
 })
 
 
 select_genre_element.addEventListener("change", (e) =>{
     current_genre = e.target.value
-    if (current_genre !== "all") {
+    var filteredSongs = filterSongs(current_genre,current_search_string)
+    displaySongs(filteredSongs,songs_element,rows,current_page)
+})
+
+function filterSongs(genre,searchString){
+    if (genre !== "all") {
         var filteredSongs = itunesSongs.filter((song) =>{
             return (
-                song.category.attributes.label === current_genre
+                song.category.attributes.label === genre &&
+                (song["im:name"].label.toLowerCase().includes(searchString) ||
+                song["im:artist"].label.toLowerCase().includes(searchString))
             )
         })
-        displaySongs(filteredSongs,songs_element,rows,current_page)
     }
     else{
-        displaySongs(itunesSongs,songs_element,rows,current_page)
+        var filteredSongs = itunesSongs.filter((song) =>{
+            return (
+                song["im:name"].label.toLowerCase().includes(searchString) ||
+                song["im:artist"].label.toLowerCase().includes(searchString)
+            )
+        })
     }
-    
-});
-
+    return filteredSongs
+}
 
 const loadSongs = async () => {
     try {
