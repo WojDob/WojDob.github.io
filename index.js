@@ -83,10 +83,38 @@ const displaySongs = (songs, wrapper, rows_per_page, page) => {
             <img class="img-circle shadowed" src="${element["im:image"][2].label}" alt="Album image" width="180" height="180">
             <h2>#${element["index"]} ${element["im:name"].label}</h2>
             <p>${element["im:artist"].label}</p>
-            <p><a class="btn btn-default shadowed" href="${element.link.attributes.href}" role="button" target="_blank">View details &raquo;</a></p>
+            
+            <button id="myBtn" class="btn btn-default shadowed">View details</button>
+            <div id="myModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2>${element["im:name"].label}</h2>
+                    <p><b>Artist:</b>  ${element["im:artist"].label}</p>
+                    <p><b>Category:</b>   ${element.category.attributes.label}</p>
+                    <p><b>Release date:</b>  ${element["im:releaseDate"].attributes.label}</p>
+                    <p><b>Price:</b>  ${element["im:price"].label}</p>
+                    <p><b>Rights:</b>  ${element.rights.label}</p>
+                    <p><a class="btn btn-default shadowed" href="${element.link.attributes.href}" role="button" target="_blank">View on iTunes &raquo;</a></p>
+                </div>
+            </div> 
         </div>
         `; 
       })
+      
+    var modal = document.getElementById("myModal");
+    var btn = document.getElementById("myBtn");
+    var span = document.getElementsByClassName("close")[0];
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    } 
     setupPagination(songs, pagination_element, rows_per_page);
 }
 
@@ -109,17 +137,12 @@ function paginationButton (page, items) {
 	if (current_page == page) button.classList.add('active');
 
 	button.addEventListener('click', function () {
-
 		current_page = page;
 		displaySongs(items, songs_element, rows, current_page);
-
 		let current_btn = document.querySelector('.pagenumbers button.active');
 		current_btn.classList.remove('active');
-
 		button.classList.add('active');
-
 	});
-
 	return button;
 }
 
